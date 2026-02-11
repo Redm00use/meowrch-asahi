@@ -200,6 +200,7 @@ class PlymouthConfigurer:
         logger.success("All services for plymouth successfully enabled! ")
 
     def install_theme(self):
+<<<<<<< HEAD
         """Install Plymouth theme"""
         logger.info("The process of installing the theme for plymouth has begun...")
         if not self.theme_src.exists():
@@ -220,6 +221,22 @@ class PlymouthConfigurer:
 
         self._run_sudo(["plymouth-set-default-theme", self.theme_name])
         logger.success(f'Installed "{self.theme_name}" Plymouth theme')
+=======
+        """Configure Plymouth theme"""
+        logger.info("The process of configuring the theme for plymouth has begun...")
+        
+        # Check if theme exists (should have been installed by RepoManager)
+        theme_installed_path = self.theme_dest / self.theme_name
+        if not theme_installed_path.exists():
+             logger.warning(
+                f"Theme directory {theme_installed_path} not found. "
+                "Ensure plymouth-theme package is installed properly via RepoManager."
+            )
+             return
+
+        self._run_sudo(["plymouth-set-default-theme", self.theme_name])
+        logger.success(f'Set default Plymouth theme to "{self.theme_name}"')
+>>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 
     def run_post_commands(self):
         """Run post-installation commands"""
@@ -238,6 +255,22 @@ class PlymouthConfigurer:
         else:
             logger.info("Skipping GRUB config generation: system is not using GRUB.")
 
+<<<<<<< HEAD
         # Always rebuild initramfs after changes
         logger.info("Running mkinitcpio -P...")
         self._run_sudo(["mkinitcpio", "-P"])
+=======
+        # Rebuild initramfs
+        if shutil.which("dracut"):
+             logger.info("Dracut detected. Regenerating initramfs with dracut...")
+             try:
+                 # Force regeneration for current kernel
+                 self._run_sudo(["dracut", "--regenerate-all", "--force"])
+                 logger.success("Dracut regeneration successful.")
+             except Exception as e:
+                 logger.error(f"Dracut regeneration failed: {e}")
+        
+        if shutil.which("mkinitcpio"):
+            logger.info("Running mkinitcpio -P...")
+            self._run_sudo(["mkinitcpio", "-P"])
+>>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))

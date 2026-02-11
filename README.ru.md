@@ -2,15 +2,14 @@
 
 <a href="https://meowrch.github.io/"><img src=".meta/logo.png" width="280px" alt="Meowrch Logo"></a>
 
-# ≽ܫ≼ Meowrch
+# ≽ܫ≼ Meowrch (Asahi Edition)
 
 ### *Arch Linux. Переосмысленный.*
-**Где производительность встречается с эстетикой**
+**Оптимизировано для Apple Silicon (ARM64)**
 
 <br>
 
-[![Issues](https://img.shields.io/github/issues/meowrch/meowrch?color=ffb29b&labelColor=1C2325&style=for-the-badge)](https://github.com/meowrch/meowrch/issues)
-[![Stars](https://img.shields.io/github/stars/meowrch/meowrch?color=fab387&labelColor=1C2325&style=for-the-badge)](https://github.com/meowrch/meowrch/stargazers)
+[![Issues](https://img.shields.io/github/issues/Redm00use/meowrch-asahi?color=ffb29b&labelColor=1C2325&style=for-the-badge)](https://github.com/Redm00use/meowrch-asahi/issues)
 [![License](https://img.shields.io/github/license/meowrch/meowrch?color=FCA2AA&labelColor=1C2325&style=for-the-badge)](./LICENSE)
 
 
@@ -157,15 +156,16 @@ Dual-boot Windows/Linux = ад с Bluetooth.
 > Для тестирования создайте нового пользователя. \
 > Если вам понравится — переходите на Meowrch полностью
 
-### 📦 Быстрый старт
+### 📦 Быстрый старт (Asahi Linux / ARM64)
 
 ```
 # 1. Клонируем репозиторий
-git clone https://github.com/meowrch/meowrch --depth 1 --single-branch
-cd meowrch
+git clone https://github.com/Redm00use/meowrch-asahi --depth 1 --single-branch
+cd meowrch-asahi
 
-# 2. Запускаем установщик
-sh install.sh
+# 2. Запускаем оптимизированный установщик
+chmod +x install.sh
+./install.sh
 
 # 3. Перезагружаемся
 reboot

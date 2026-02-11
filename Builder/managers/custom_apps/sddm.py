@@ -52,9 +52,19 @@ class SDDMConfigurer(AppConfigurer):
         )
 
     def _install_theme(self) -> None:
+<<<<<<< HEAD
         subprocess.run(
             ["sudo", "cp", "-r", "./misc/sddm_theme", self.theme_path], check=True
         )
+=======
+        if not Path(self.theme_path).exists():
+            logger.warning(
+                f"Theme directory {self.theme_path} not found. "
+                "Ensure meowrch-settings or relevant package is installed properly via RepoManager."
+            )
+        else:
+            logger.success(f"SDDM theme found at {self.theme_path}")
+>>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 
     def granting_permissions(self) -> None:
         ##==> Выдаем права sddm

@@ -55,6 +55,7 @@ class PawletteConfigurer(AppConfigurer):
                 raise
 
     def _install_available_themes(self) -> List[str]:
+<<<<<<< HEAD
         error_msg = "Theme data parsing failed: {err}"
         themes = ["catppuccin-mocha", "catppuccin-latte"]
         installed = []
@@ -92,6 +93,36 @@ class PawletteConfigurer(AppConfigurer):
             text=True,
         )
         logger.success(f"Theme {theme_name} installed")
+=======
+        # Themes should already be installed by RepoManager
+        # We just verify they are available
+        themes = ["catppuccin-mocha", "catppuccin-latte"]
+        verified_themes = []
+        
+        logger.info("Checking for installed pawlette themes...")
+        try:
+             # Check if themes are listed in pawlette
+             result = subprocess.run(
+                ["pawlette", "list-themes"],
+                capture_output=True,
+                text=True
+             )
+             available = result.stdout
+             
+             for theme in themes:
+                 if theme in available:
+                     verified_themes.append(theme)
+                 else:
+                     logger.warning(f"Theme {theme} is not detected by pawlette (files might be missing or not indexed).")
+        except Exception as e:
+            logger.error(f"Failed to list pawlette themes: {e}")
+            
+        return verified_themes
+
+    def _install_theme(self, theme_name: str) -> None:
+        # Deprecated: RepoManager installs packages
+        pass
+>>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 
     def _apply_theme(self, theme_name: str) -> None:
         """Логика применения темы"""
