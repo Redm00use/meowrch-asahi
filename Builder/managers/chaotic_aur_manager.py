@@ -19,6 +19,11 @@ class ChaoticAurManager:
     @staticmethod
     def install(max_retries: int = 3) -> bool:
         """Устанавливает Chaotic AUR репозиторий"""
+        import platform
+        if platform.machine() == "aarch64":
+            logger.warning("Chaotic AUR installation skipped on aarch64 (experimental/unsupported).")
+            return False
+
         logger.info("Installing Chaotic AUR repository...")
         
         for attempt in range(max_retries):

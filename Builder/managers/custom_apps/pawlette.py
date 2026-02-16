@@ -55,45 +55,6 @@ class PawletteConfigurer(AppConfigurer):
                 raise
 
     def _install_available_themes(self) -> List[str]:
-<<<<<<< HEAD
-        error_msg = "Theme data parsing failed: {err}"
-        themes = ["catppuccin-mocha", "catppuccin-latte"]
-        installed = []
-
-        try:
-            error_msg = "Skipping theme {theme_name}: {err}"
-            for theme_name in themes:
-                try:
-                    self._install_theme(theme_name)
-                    installed.append(theme_name)
-                except subprocess.CalledProcessError as e:
-                    logger.error(error_msg.format(theme_name=theme_name, err=e.stderr))
-                except Exception:
-                    logger.error(
-                        error_msg.format(
-                            theme_name=theme_name, err=traceback.format_exc()
-                        )
-                    )
-                    continue
-        except subprocess.CalledProcessError as e:
-            logger.error(error_msg.format(err=e.stderr))
-        except Exception:
-            logger.error(error_msg.format(err=traceback.format_exc()))
-
-        return installed
-
-    def _install_theme(self, theme_name: str) -> None:
-        """Логика установки темы без изменений"""
-        logger.info(f"Installing theme: {theme_name}")
-        subprocess.run(
-            ["pawlette", "install-theme", theme_name],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        logger.success(f"Theme {theme_name} installed")
-=======
         # Themes should already be installed by RepoManager
         # We just verify they are available
         themes = ["catppuccin-mocha", "catppuccin-latte"]
@@ -122,7 +83,6 @@ class PawletteConfigurer(AppConfigurer):
     def _install_theme(self, theme_name: str) -> None:
         # Deprecated: RepoManager installs packages
         pass
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 
     def _apply_theme(self, theme_name: str) -> None:
         """Логика применения темы"""

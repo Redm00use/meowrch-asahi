@@ -11,6 +11,7 @@ from managers.apps_manager import AppsManager
 from managers.filesystem_manager import FileSystemManager
 from managers.package_manager import PackageManager
 from managers.post_install_manager import PostInstallation
+from managers.repo_manager import RepoManager
 from packages import BASE, CUSTOM
 from question import Question
 from utils.config_backup import ConfigBackup
@@ -62,6 +63,9 @@ class Builder:
             PackageManager.update_database()
             
             PackageManager.install_aur_helper(self.build_options.aur_helper)
+
+            # Установка кастомных репозиториев (mewline, pawlette и т.д.) с патчами для ARM64
+            RepoManager.install_custom_repos()
 
             self.packages_installation()
 

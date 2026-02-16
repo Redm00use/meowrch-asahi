@@ -5,11 +5,21 @@
 # - Sourced: sets/export GPU_SETUP (quiet; no stdout).
 # Profiles:
 #   nvidia-only | amd-only | intel-only | nouveau-only |
-#   hybrid-intel-nvidia | hybrid-amd-intel | hybrid-intel-nouveau
+#   hybrid-intel-nvidia | hybrid-amd-intel | hybrid-intel-nouveau | apple-silicon
 
 cmd_exists() { command -v "$1" >/dev/null 2>&1; }
 
 # Detectors (POSIX)
+_detect_apple_silicon() {
+  if grep -q "Apple" /proc/cpuinfo 2>/dev/null; then
+    echo 1
+  elif [ -f /proc/device-tree/compatible ] && grep -q "apple" /proc/device-tree/compatible; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
 _detect_nvidia() {
   if cmd_exists nvidia-smi && nvidia-smi >/dev/null 2>&1; then
     echo 1
@@ -44,43 +54,48 @@ _detect_nouveau() {
   fi
 }
 
+APPLE=$(_detect_apple_silicon)
 NVIDIA=$(_detect_nvidia)
 AMD=$(_detect_amd)
 INTEL=$(_detect_intel)
 NOUVEAU=$(_detect_nouveau)
 
-key="${AMD}${INTEL}${NOUVEAU}${NVIDIA}"
+if [ "$APPLE" = "1" ]; then
+  GPU_SETUP="apple-silicon"
+else
+  key="${AMD}${INTEL}${NOUVEAU}${NVIDIA}"
 
-GPU_SETUP="unknown"
-case "$key" in
-  0101) GPU_SETUP=hybrid-intel-nvidia ;;
-  1100) GPU_SETUP=hybrid-amd-intel ;;
-  0110) GPU_SETUP=hybrid-intel-nouveau ;;
-  0001) GPU_SETUP=nvidia-only ;;
-  1000) GPU_SETUP=amd-only ;;
-  0010) GPU_SETUP=nouveau-only ;;
-  0100) GPU_SETUP=intel-only ;;
-  *)
-    # Heuristic fallback if exact combo didn't match
-    if [ "$NVIDIA" = "1" ] && [ "$INTEL" = "1" ]; then
-      GPU_SETUP=hybrid-intel-nvidia
-    elif [ "$AMD" = "1" ] && [ "$INTEL" = "1" ]; then
-      GPU_SETUP=hybrid-amd-intel
-    elif [ "$INTEL" = "1" ] && [ "$NOUVEAU" = "1" ]; then
-      GPU_SETUP=hybrid-intel-nouveau
-    elif [ "$NVIDIA" = "1" ]; then
-      GPU_SETUP=nvidia-only
-    elif [ "$AMD" = "1" ]; then
-      GPU_SETUP=amd-only
-    elif [ "$INTEL" = "1" ]; then
-      GPU_SETUP=intel-only
-    elif [ "$NOUVEAU" = "1" ]; then
-      GPU_SETUP=nouveau-only
-    else
-      GPU_SETUP=unknown
-    fi
-    ;;
- esac
+  GPU_SETUP="unknown"
+  case "$key" in
+    0101) GPU_SETUP=hybrid-intel-nvidia ;;
+    1100) GPU_SETUP=hybrid-amd-intel ;;
+    0110) GPU_SETUP=hybrid-intel-nouveau ;;
+    0001) GPU_SETUP=nvidia-only ;;
+    1000) GPU_SETUP=amd-only ;;
+    0010) GPU_SETUP=nouveau-only ;;
+    0100) GPU_SETUP=intel-only ;;
+    *)
+      # Heuristic fallback if exact combo didn't match
+      if [ "$NVIDIA" = "1" ] && [ "$INTEL" = "1" ]; then
+        GPU_SETUP=hybrid-intel-nvidia
+      elif [ "$AMD" = "1" ] && [ "$INTEL" = "1" ]; then
+        GPU_SETUP=hybrid-amd-intel
+      elif [ "$INTEL" = "1" ] && [ "$NOUVEAU" = "1" ]; then
+        GPU_SETUP=hybrid-intel-nouveau
+      elif [ "$NVIDIA" = "1" ]; then
+        GPU_SETUP=nvidia-only
+      elif [ "$AMD" = "1" ]; then
+        GPU_SETUP=amd-only
+      elif [ "$INTEL" = "1" ]; then
+        GPU_SETUP=intel-only
+      elif [ "$NOUVEAU" = "1" ]; then
+        GPU_SETUP=nouveau-only
+      else
+        GPU_SETUP=unknown
+      fi
+      ;;
+   esac
+fi
 
 # Export for callers that source this file
 export GPU_SETUP

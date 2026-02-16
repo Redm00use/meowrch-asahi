@@ -4,6 +4,7 @@ import subprocess
 import shutil
 import tempfile
 import traceback
+import re
 from pathlib import Path
 from loguru import logger
 from managers.package_manager import PackageManager
@@ -71,10 +72,14 @@ class RepoManager:
             with open(pkgbuild_path, 'r', encoding='utf-8') as f:
                 content = f.read()
             
-            if "arch=('x86_64')" in content or 'arch=("x86_64")' in content:
+            # Use regex to find arch array containing only x86_64
+            # Matches: arch=('x86_64'), arch=("x86_64"), arch=( 'x86_64' )
+            pattern = r"arch\s*=\s*\(\s*(['\"]?)x86_64\1\s*\)"
+            
+            if re.search(pattern, content):
                 logger.warning(f"Patching architecture in {pkgbuild_path.name} to include aarch64...")
-                content = content.replace("arch=('x86_64')", "arch=('x86_64' 'aarch64')")
-                content = content.replace('arch=("x86_64")', 'arch=("x86_64" "aarch64")')
+                # Replace with arch=('x86_64' 'aarch64')
+                content = re.sub(pattern, "arch=('x86_64' 'aarch64')", content)
                 
                 with open(pkgbuild_path, 'w', encoding='utf-8') as f:
                     f.write(content)

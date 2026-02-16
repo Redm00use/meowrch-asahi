@@ -3,6 +3,13 @@
 
 set -e
 
+# Architecture Check
+ARCH=$(uname -m)
+if [ "$ARCH" == "aarch64" ]; then
+    echo "Skipping update-chwd-repo on aarch64 (Asahi Linux). Drivers are kernel-managed."
+    exit 0
+fi
+
 REPO_PATH="/var/lib/meowrch/cachyos-local"
 REPO_NAME="meowrch-cachyos-local"
 CACHYOS_REPO_URL="https://mirror.cachyos.org/repo/x86_64/cachyos"

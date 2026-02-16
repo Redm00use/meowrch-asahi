@@ -55,20 +55,6 @@ BASE = Packages(
 	),
 	aur=DistributionPackages(
 		common=[
-<<<<<<< HEAD
-            ##==> System
-            ###########################################
-            "meowrch-settings", "meowrch-tools",
-
-			##==> GUI
-            ###########################################
-            "nemo-tags", "hotkeyhub-bin",
-            
-            ##==> Customization: Themes, icons and cursors
-            ###########################################
-            "bibata-cursor-theme-bin", "tela-circle-icon-theme-dracula",
-            "pawlette",
-=======
             ##==> GUI
             ###########################################
             "nemo-tags",
@@ -76,7 +62,6 @@ BASE = Packages(
             ##==> Customization: Themes, icons and cursors
             ###########################################
             "bibata-cursor-theme", "tela-circle-icon-theme-dracula",
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
             
             ##==> CLI-Tools
             ###########################################
@@ -88,11 +73,7 @@ BASE = Packages(
 		],
 		bspwm_packages=["xkb-switch", "i3lock-color"],
 		hyprland_packages=[
-<<<<<<< HEAD
-			"hyprprop", "grimblast-git", "mewline"
-=======
-			"hyprprop", "grimblast-git"
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
+			"hyprprop", "grimblast-git", "python-fabric-git"
 		]
 	)
 )
@@ -105,10 +86,6 @@ CUSTOM = {
     "development": {
         "obsidian": PackageInfo("A powerful knowledge base that works on top of a local folder of plain text Markdown files", recommended=True),
         "postgresql": PackageInfo("Sophisticated object-relational DBMS", recommended=True),
-<<<<<<< HEAD
-        "pgadmin4-desktop": PackageInfo("The desktop user interface for pgAdmin", aur=True, recommended=True),
-=======
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
         "redis": PackageInfo("An in-memory database that persists on disk")
 	},
     "social_media": {
@@ -117,10 +94,6 @@ CUSTOM = {
 		"vesktop": PackageInfo("Custom Discord client", recommended=True, aur=True)
 	},
 	"games": {
-<<<<<<< HEAD
-		"steam": PackageInfo("Valve's Steam, tailored for Asahi Linux", recommended=True, selected=True), 
-=======
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 		"gamemode": PackageInfo("Game optimization tool", recommended=True, selected=True), 
 		"mangohud": PackageInfo("Displays metrics in running games"),
         "fex-emu": PackageInfo("Fast Userspace x86/x86-64 Emulator", recommended=True, selected=True),
@@ -131,10 +104,6 @@ CUSTOM = {
 	},
     "office": {
         "libreoffice-fresh": PackageInfo("Comprehensive office suite for word processing, spreadsheets, and presentations"),
-<<<<<<< HEAD
-        "onlyoffice-bin": PackageInfo("Office suite that allows collaborative editing of documents", aur=True, recommended=True),
-=======
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 		"evince": PackageInfo("Document viewer", selected=True, recommended=True)
     }
 }

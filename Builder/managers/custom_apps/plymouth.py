@@ -200,28 +200,6 @@ class PlymouthConfigurer:
         logger.success("All services for plymouth successfully enabled! ")
 
     def install_theme(self):
-<<<<<<< HEAD
-        """Install Plymouth theme"""
-        logger.info("The process of installing the theme for plymouth has begun...")
-        if not self.theme_src.exists():
-            logger.warning(
-                "No theme found in ./misc/plymouth_theme - skipping theme installation"
-            )
-            return
-
-        dest = self.theme_dest / self.theme_name
-
-        # Create temporary directory
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_dest = Path(tmp_dir) / self.theme_name
-            shutil.copytree(self.theme_src, tmp_dest)
-
-            self._run_sudo(["rm", "-rf", str(dest)])
-            self._run_sudo(["cp", "-r", str(tmp_dest), str(self.theme_dest)])
-
-        self._run_sudo(["plymouth-set-default-theme", self.theme_name])
-        logger.success(f'Installed "{self.theme_name}" Plymouth theme')
-=======
         """Configure Plymouth theme"""
         logger.info("The process of configuring the theme for plymouth has begun...")
         
@@ -236,7 +214,6 @@ class PlymouthConfigurer:
 
         self._run_sudo(["plymouth-set-default-theme", self.theme_name])
         logger.success(f'Set default Plymouth theme to "{self.theme_name}"')
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))
 
     def run_post_commands(self):
         """Run post-installation commands"""
@@ -255,11 +232,6 @@ class PlymouthConfigurer:
         else:
             logger.info("Skipping GRUB config generation: system is not using GRUB.")
 
-<<<<<<< HEAD
-        # Always rebuild initramfs after changes
-        logger.info("Running mkinitcpio -P...")
-        self._run_sudo(["mkinitcpio", "-P"])
-=======
         # Rebuild initramfs
         if shutil.which("dracut"):
              logger.info("Dracut detected. Regenerating initramfs with dracut...")
@@ -273,4 +245,3 @@ class PlymouthConfigurer:
         if shutil.which("mkinitcpio"):
             logger.info("Running mkinitcpio -P...")
             self._run_sudo(["mkinitcpio", "-P"])
->>>>>>> f7b4f55 (feat: optimize installer for Asahi Linux (ARM64))

@@ -298,6 +298,13 @@ Server = file://{self.repo_path}
             return False
 
     def install(self) -> bool:
+        # Check architecture
+        import platform
+        arch = platform.machine()
+        if arch == "aarch64":
+            logger.warning(f"Skipping Chwd/CachyOS setup on {arch} (Asahi Linux). Drivers are managed by the kernel.")
+            return True
+
         logger.info("Starting chwd installation")
         
         steps = [
